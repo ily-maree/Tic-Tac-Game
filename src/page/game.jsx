@@ -1,51 +1,221 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
+import GameBtn from '../components/GameBtn'
+// import CrossIcon from '../assets/CombinedshapeCopy.png'
+// import CircleIcon from '../assets/Oval Copy.png'
+// import CircleIconGrey from '../assets/Oval copy-grey.png'
+// import CrossIconGrey from '../assets/Combined Shape Copy 2.png'
+import { useSearchParams } from 'react-router-dom'
+import { GrPowerReset } from "react-icons/gr"
+// import WinPopUp from '../components/WinnersModalComp'
+import WinnnersModalComp from '../components/WinnersModalComp'
+// import ResetGameModal from '../component/ResetGameModal'
 
-import CrossIcon from "../assets/CombinedShapeCopy.png";
-import CircleIcon from "../assets/Oval Copy.png";
-import CrossIcongrey from "../assets/Combined Shape Copy 2.png";
-import { GrPowerReset } from 'react-icons/gr';
 const Game = () => {
-  return (
-    <main
-      className="w-full max-w-[375px] h-auto mx-auto flex flex-col items-center
-    justify-center "
-    >
-      <div className="w-full flex items-center justify-between gap-1 px-12">
-        <div className="flex">
-          {" "}
-          <img src={CrossIcon} alt="Cross Icon" className="w-6 h-6"/>
-          <img src={CircleIcon} alt="Circle Icon" className="w-6 h-6"/>
-        </div>
-        <button className="border-none bg-[#1f3641] flex items-center gap-2 cursor-pointer  shadow-[0_5px_0_rgba(0,0,0,0.25)] rounded-[10px] w-30 px-3.5">
-          <img src={CrossIcongrey} alt="CrossIcongrey" className="w-4 h-4"/>
-          <h2 className="text-[#a8bfc9] text-[1rem] font-bold ">TURN</h2>
-        </button>
-        <button className='border-1 bg-[#a8bfc9] w-6 h-6 px-1 rounded-[6px]'><GrPowerReset /></button>
-      </div>
-      <div className="grid grid-cols-3 gap-6 p-6 ">
-        <div className="bg-gray-700 h-18 rounded-lg w-20 shadow-[0_5px_0_rgba(0,0,0,0.25)]"></div>
-        <div className="bg-gray-700 h-18 rounded-lg w-20 shadow-[0_5px_0_rgba(0,0,0,0.25)]"></div>
-        <div className="bg-gray-700 h-18 rounded-lg w-20 shadow-[0_5px_0_rgba(0,0,0,0.25)]"></div>
-        <div className="bg-gray-700 h-18 rounded-lg w-20 shadow-[0_5px_0_rgba(0,0,0,0.25)]"></div>
-        <div className="bg-gray-700 h-18 rounded-lg w-20 shadow-[0_5px_0_rgba(0,0,0,0.25)]"></div>
-        <div className="bg-gray-700 h-18 rounded-lg w-20 shadow-[0_5px_0_rgba(0,0,0,0.25)]"></div>
-        <div className="bg-gray-700 h-18 rounded-lg w-20 shadow-[0_5px_0_rgba(0,0,0,0.25)]"></div>
-        <div className="bg-gray-700 h-18 rounded-lg w-20 shadow-[0_5px_0_rgba(0,0,0,0.25)]"></div>
-        <div className="bg-gray-700 h-18 rounded-lg w-20 shadow-[0_5px_0_rgba(0,0,0,0.25)]"></div>
-      </div>
-      <div className="flex items-center justify-between text-xs text-black gap-2 ">
-        <button className="bg-cyan-500 flex flex-col py-1 rounded-lg font-bold w-20">
-          X (YOU)<span className="text-xl">0</span>
-        </button>
-        <button className="bg-blue-300 flex flex-col py-1 font-bold rounded-lg w-24">
-          TIES <span className="text-xl">0</span>
-        </button>
-        <button className="bg-yellow-400 flex flex-col py-1 rounded-lg font-bold w-24">
-          O (CPU) <span className="text-xl">0</span>
-        </button>
-      </div>
-    </main>
-  );
-};
+  const [currentPlayer, setCurrentPlayer]=useState("")
+  const [xSelection, setXSelection]=useState([])
+    const [oSelection, setOSelection]=useState([])
+    const [winner, setWinner] = useState("")
+    const [winners, setWinners] = useState([])
+    const [tiles, setTiles] = useState([1,2,3,4,5,6,7,8,9])
+    const [ties, setTies] = useState(0)
 
-export default Game;
+    // const CheckTie =(tiles, winner)=>{
+    //   if (tiles.every(item)) =>item !== ''
+    // }
+
+    const [searchParams] = useSearchParams()
+    const first = searchParams.get("first")??""
+ 
+    // let tiles = [1,2,3,4,5,6,7,8,9]
+    const answers = [
+      [1,2,3],[4,5,6],[7,8,9],[1,5,9],[7,5,3],[1,4,7],[2,5,8],[3,6,9]
+    ]
+
+    function checkResult(arr){
+      const result = answers.some(answer=>answer.every(val=>arr.includes(val)))
+
+      return result
+    }
+  function handleSelect(select){
+    if(currentPlayer ==="x"){
+      setCurrentPlayer("o")
+      const check = checkResult([...xSelection, select])
+      setXSelection(prev=>[...prev, select])
+      if (check){
+        setTiles([])
+        setWinner("x")
+        setWinners(prev=>[...prev, "x"])
+        // console.log("x is the winner")
+      }else{
+      //  tiles=tiles.filter(tile=>tile!==select) 
+       setTiles(prev=>prev.filter(tile=>tile!==select))
+      //  console.log(tiles)
+      //  console.log(tiles.includes(1))
+      }
+      
+    }else{
+    setCurrentPlayer("x") 
+    const check = checkResult([...oSelection, select])
+      setOSelection(prev=>[...prev, select])
+     if (check){
+        setTiles([])
+        setWinner("o")
+        setWinners(prev=>[...prev, "o"])
+        // console.log("o is the winner")
+      }else{
+      //  tiles=tiles.filter(tile=>tile!==select) 
+      setTiles(prev=>prev.filter(tile => tile !== select))
+      //  console.log(tiles)
+      //  console.log(tiles.includes(1))
+      }
+    }
+  }
+
+  function handleNextRound(status){
+if(status==="quit"){
+    // setCurrentPlayer = ("")
+    setXSelection([])
+    setOSelection([])
+    setWinner("")
+    setWinners([])
+    setTiles([1,2,3,4,5,6,7,8,9])
+}else{
+  setWinner("")
+  setTiles([1,2,3,4,5,6,7,8,9])
+  setOSelection([])
+  setXSelection([])  
+}
+  }
+
+  useEffect(()=>{
+    if(first){
+      setCurrentPlayer(first)
+    }
+  }, [first])
+
+  return (
+    <main>
+      <div className='flex justify-between mb-[20px]'>
+        <div className='flex w-[20px] h-[20px] items'>
+        <img src='/assets/CombinedshapeCopy.png' alt=""/>
+        <img src='/assets/Oval Copy.png' alt="" />
+      </div>
+      <button className='flex items-center gap-2 text-[#a8bfc9] bg-[#2f3746] shadow-lg p-[3px] h-[25px] rounded-[5px]'>
+        {currentPlayer === "x"?(<img src='/assets/Combined Shape Copy 2.png' alt="" className='w-[20px] h-[20px]'/>) : (<img src='/assets/Oval copy-grey.png' alt="" />)}
+        {/* <img src={CrossIconGrey} alt="" width={20} height={20} className='w-[20px] h-[20px]'/> */}
+        <span className='text-[#a8bfc9] text-[1rem] font-bold'>TURN</span>
+      </button>
+      <button className='bg-[#a8bfc9] text-[#2f3746] font-semibold text-[1.5rem]flex items-center shadow-2xl shadow-[#a8bfc9] p-[8px] h-[25px] 
+      rounded-[5px] cursor-pointer'>
+        <GrPowerReset />
+      </button>
+      </div>
+      <div className='grid grid-cols-3 gap-[15px]'>
+      <GameBtn
+        bg='rgba(47, 55, 70, 0.5)'
+        shadow='0px 5px rgba(31, 29, 25, 0.5)'
+         onClick={()=> handleSelect(1)}
+         disable={winner||tiles.length<1?true:false||tiles.includes(1)?false:true}
+         oSelection={oSelection}
+         xSelection={xSelection}
+         index={1}
+      />
+      <GameBtn
+        bg='rgba(47, 55, 70, 0.5)'
+        shadow='0px 5px rgba(31, 29, 25, 0.5)'
+         onClick={()=> handleSelect(2)}
+         disable={winner||tiles.length<1?true:false||tiles.includes(2)?false:true}
+         oSelection={oSelection}
+         xSelection={xSelection}
+         index={2}
+      />
+      <GameBtn
+        bg='rgba(47, 55, 70, 0.5)'
+        shadow='0px 5px rgba(31, 29, 25, 0.5)'
+         onClick={()=> handleSelect(3)}
+         disable={winner||tiles.length<1?true:false||tiles.includes(3)?false:true}
+         oSelection={oSelection}
+         xSelection={xSelection}
+         index={3}
+      />
+      
+      <GameBtn
+        bg='rgba(47, 55, 70, 0.5)'
+        shadow='0px 5px rgba(31, 29, 25, 0.5)'
+         onClick={()=> handleSelect(4)}
+         disable={winner||tiles.length<1?true:false||tiles.includes(4)?false:true}
+         oSelection={oSelection}
+         xSelection={xSelection}
+         index={4}
+      />
+      <GameBtn
+        bg='rgba(47, 55, 70, 0.5)'
+        shadow='0px 5px rgba(31, 29, 25, 0.5)'
+         onClick={()=> handleSelect(5)}
+         disable={winner||tiles.length<1?true:false||tiles.includes(5)?false:true}
+         oSelection={oSelection}
+         xSelection={xSelection}
+         index={5}
+      />
+      <GameBtn
+        bg='rgba(47, 55, 70, 0.5)'
+        shadow='0px 5px rgba(31, 29, 25, 0.5)'
+         onClick={()=> handleSelect(6)}
+         disable={winner||tiles.length<1?true:false||tiles.includes(6)?false:true}
+         oSelection={oSelection}
+         xSelection={xSelection}
+         index={6}
+      />
+      <GameBtn
+        bg='rgba(47, 55, 70, 0.5)'
+        shadow='0px 5px rgba(31, 29, 25, 0.5)'
+         onClick={()=> handleSelect(7)}
+         disable={winner||tiles.length<1?true:false||tiles.includes(7)?false:true}
+         oSelection={oSelection}
+         xSelection={xSelection}
+         index={7}
+      />
+      <GameBtn
+        bg='rgba(47, 55, 70, 0.5)'
+        shadow='0px 5px rgba(31, 29, 25, 0.5)'
+         onClick={()=> handleSelect(8)}
+         disable={winner||tiles.length<1?true:false||tiles.includes(8)?false:true}
+         oSelection={oSelection}
+         xSelection={xSelection}
+         index={8}
+      />
+      <GameBtn
+        bg='rgba(47, 55, 70, 0.5)'
+        shadow='0px 5px rgba(31, 29, 25, 0.5)'
+         onClick={()=> handleSelect(9)}
+         disable={winner||tiles.length<1?true:false||tiles.includes(9)?false:true}
+         oSelection={oSelection}
+         xSelection={xSelection}
+         index={9}
+      />
+    </div>
+    <div className='flex justify-between mt-[20px]'>
+      <button className='bg-[#31C3BD] rounded-[10px] p-[3px] w-[100px] h-[50px] shadow-2xl'>
+        <span>X (YOU)</span>
+        <h3 className='font-bold'>{winners.filter(winner=>winner==="x").length}</h3>
+      </button>
+      <button className='bg-[#a8bfc9] rounded-[10px] p-[3px] w-[100px] h-[50px]'>
+        <span>TIES</span>
+        <h3 className='font-bold'>0</h3>
+      </button>
+      <button className='bg-[#F2B137] rounded-[10px] p-[3px] w-[100px] h-[50px]'>
+        <span>O (CPU)</span>
+        <h3 className='font-bold'>{winners.filter(winner=>winner==="o").length}</h3>
+      </button>
+    </div>
+    {/* <ResetGameModal /> */}
+    {winner&& <WinnnersModalComp
+      winner={winner}
+      cb={handleNextRound}
+      />}
+      
+    </main>
+  )
+}
+
+export default Game
