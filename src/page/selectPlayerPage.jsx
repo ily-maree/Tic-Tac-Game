@@ -1,8 +1,8 @@
 import React, { useState } from "react";
-import CrossIcon from "../assets/CombinedShapeCopy.png";
-import CircleIcon from "../assets/Oval Copy.png";
-import CrossIcongrey from "../assets/Combined Shape Copy 2.png";
-import CircleIcongrey from "../assets/Oval Copy-grey.png";
+// import CrossIcon from "../assets/CombinedShapeCopy.png";
+// import CircleIcon from "../assets/Oval Copy.png";
+// import CrossIcongrey from "../assets/Combined Shape Copy 2.png";
+// import CircleIcongrey from "../assets/Oval Copy-grey.png";
 import ButtonComp from "../components/ButtonComp";
 import { Link } from "react-router-dom";
 const SelectPlayerPage = ({
@@ -18,8 +18,8 @@ const SelectPlayerPage = ({
     justify-center gap-[50px]"
     >
       <div className="flex items-center justify-center gap-1">
-        <img src={CrossIcon} alt="Cross Icon" />
-        <img src={CircleIcon} alt="Circle Icon" />
+        <img src='/assets/CombinedShapeCopy.png"' alt="Cross Icon" />
+        <img src='/assets/Oval Copy.png"' alt="Circle Icon" />
       </div>
       <section
         className="bg-[#1F3641] rounded-[15px] h-auto flex flex-col items-center gap-2 p-[10px]"
@@ -38,7 +38,7 @@ const SelectPlayerPage = ({
               playerOneMark == "x" ? "bg-[#a8bfc9]" : "bg-none"
             } border-none flex items-center justify-center cursor-pointer hover:bg-[#1f3641] hover:shadow-[0_5px_0_rgba(0,0,0,0.25)] rounded-[10px]`}
           >
-            <img src={CrossIcongrey} alt="CrossIcongrey" />
+            <img src='/assets/Combined Shape Copy 2.png"' alt="CrossIcongrey" />
           </button>
           <button
             type="button"
@@ -47,7 +47,7 @@ const SelectPlayerPage = ({
               playerOneMark == "o" ? "bg-[#a8bfc9]" : "bg-none"
             } border-none flex items-center justify-center cursor-pointer hover:bg-[#1f3641] hover:shadow-[0_5px_0_rgba(0,0,0,0.25)] rounded-[10px]`}
           >
-            <img src={CircleIcongrey} alt="CircleIcongrey" />
+            <img src='/assets/Oval Copy-grey.png"' alt="CircleIcongrey" />
           </button>
         </div>
         <h3 className="text-[#a8bfc9] text-base font-semibold">
@@ -64,6 +64,7 @@ const SelectPlayerPage = ({
             shadow="0px 5px rgba(242, 177, 55, 0.5)"
             onClick={() => setNewgame("cpu")}
           />
+          <Link to="/GameVsCpu"></Link>
         </Link>
         <Link to="/game">
           <ButtonComp
