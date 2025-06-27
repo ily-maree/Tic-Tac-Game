@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import GameBtn from '../components/GameBtn'
 import CrossIcon from '../assets/CombinedshapeCopy.png'
 import CircleIcon from '../assets/Oval Copy.png'
+import CircleIconGrey from '../assets/Oval copy-grey.png'
 import CrossIconGrey from '../assets/Combined Shape Copy 2.png'
 import { useSearchParams } from 'react-router-dom'
 import { GrPowerReset } from "react-icons/gr"
@@ -100,7 +101,8 @@ if(status==="quit"){
         <img src={CircleIcon} alt="" />
       </div>
       <button className='flex items-center gap-2 text-[#a8bfc9] bg-[#2f3746] shadow-lg p-[3px] h-[25px] rounded-[5px]'>
-        <img src={CrossIconGrey} alt="" width={20} height={20} className='w-[20px] h-[20px]'/>
+        {currentPlayer === "x"?(<img src={CrossIconGrey} alt="" className='w-[20px] h-[20px]'/>) : (<img src={CircleIconGrey} alt="" className='w-[20px] h-[20px]'/>)}
+        {/* <img src={CrossIconGrey} alt="" width={20} height={20} className='w-[20px] h-[20px]'/> */}
         <span className='text-[#a8bfc9] text-[1rem] font-bold'>TURN</span>
       </button>
       <button className='bg-[#a8bfc9] text-[#2f3746] font-semibold text-[1.5rem]flex items-center shadow-2xl shadow-[#a8bfc9] p-[8px] h-[25px] 
